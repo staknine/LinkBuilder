@@ -1,0 +1,65 @@
+<%= if @live_action in [:edit] do %>
+  <.modal id="modal" return_to={Routes.admin_plan_show_path(@socket, :show, @plan)}>
+    <:modal_title><%= @page_title %></:modal_title>
+    <.live_component
+      module={LinkBuilderWeb.Admin.PlanLive.FormComponent}
+      id={@plan.id}
+      plan={@plan}
+      action={@live_action}
+      return_to={Routes.admin_plan_show_path(@socket, :show, @plan)} />
+  </.modal>
+<% end %>
+
+<%= stripe_disabled_alert() %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+
+    <div class="shadow bordered card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Show Plan</h3>
+        </div>
+      </div>
+      <div class="card-body prose">
+
+        <div>
+          <strong>Product:</strong>
+          <%= @plan.product.name %>
+          <small>(<%= @plan.product.stripe_id %>)</small>
+        </div>
+
+        <div>
+          <strong>Name:</strong>
+          <%= @plan.name %>
+          <small>(<%= @plan.stripe_id %>)</small>
+        </div>
+
+        <div>
+          <strong>Amount:</strong>
+          <%= @plan.amount %>
+        </div>
+
+        <div>
+          <strong>Currency:</strong>
+          <%= @plan.currency %>
+        </div>
+
+        <div>
+          <strong>Interval:</strong>
+          <%= @plan.interval %>
+        </div>
+
+        <div>
+          <strong>Active:</strong>
+          <%= @plan.active %>
+        </div>
+
+      </div>
+      <div class="border-t card-actions border-base-200">
+        <%= live_patch "Edit", to: Routes.admin_plan_show_path(@socket, :edit, @plan), class: "btn btn-link" %>
+        <%= live_redirect "Back", to: Routes.admin_plan_index_path(@socket, :index), class: "btn btn-link" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<h2 class="aligncenter">
+  Login with magic link
+</h2>
+
+<%= content_tag(:p, "Please use the following link to sign in") %>
+
+<p class="aligncenter">
+  <%= link "Click to login", to: @url, class: "btn-primary" %>
+</p>
+
+<%= content_tag(:p, "You can disregard this email if you didn't request a password reset.") %>

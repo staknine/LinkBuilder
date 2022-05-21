@@ -1,0 +1,51 @@
+<div class="flex items-center justify-between">
+  <.heading>
+    Team
+  </.heading>
+  <div class="mb-12">
+    <button class="btn btn-primary" phx-click="open" phx-target="#invitation-modal" >
+      Invite user
+    </button>
+  </div>
+</div>
+
+<%= live_component LinkBuilderWeb.App.LiveComponents.Modal, id: "invitation-modal", title: "Invite a new team member" do %>
+  <%= live_component LinkBuilderWeb.App.TeamLive.InvitationFormComponent, id: :new_invitation, user: @user %>
+<% end %>
+
+<.card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="users">
+        <%= for user <- @users do %>
+          <tr id={"user-#{user.id}"}>
+            <td>
+              <%= if user.id == @user.id do %>
+                <div class="badge badge-info">
+                  You
+                </div>
+              <% end %>
+            </td>
+            <th><%= user.name %></th>
+            <td><%= user.email %></td>
+
+            <td class="text-right">
+              <span><% #= live_patch "Notify", to: Routes.admin_user_index_path(@socket, :notify, user), class: "link link-primary" %></span>
+              <span><% #= live_redirect "Show", to: Routes.admin_user_show_path(@socket, :show, user), class: "link link-primary" %></span>
+              <span><% #= live_patch "Edit", to: Routes.admin_user_index_path(@socket, :edit, user), class: "link link-primary" %></span>
+              <span><% #= link "Delete", to: "#", phx_click: "delete", phx_value_id: user.id, data: [confirm: "Are you sure?"], class: "link link-primary" %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</.card>

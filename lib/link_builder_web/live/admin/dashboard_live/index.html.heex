@@ -1,0 +1,189 @@
+<div class="flex items-center justify-between px-4 py-3 mb-2 border-b border-base-200">
+  <h2 class="text-2xl font-bold">Dashboard - Stats</h2>
+</div>
+
+<div class="w-full shadow stats">
+  <div class="stat place-items-center place-content-center">
+    <div class="stat-title">Revenue</div>
+    <div class="stat-value">$ 310K</div>
+    <div class="stat-desc">
+      <% data = [0, 5, 10, 15, 12, 12, 15, 14, 20, 14, 10, 15, 15] %>
+      <%= Contex.Sparkline.new(data) |> Contex.Sparkline.draw() %>
+    </div>
+  </div>
+  <div class="stat place-items-center place-content-center">
+    <div class="stat-title">New Users</div>
+    <div class="stat-value text-success">4,200</div>
+    <div class="stat-desc text-success">↗︎ 400 (22%)</div>
+  </div>
+  <div class="stat place-items-center place-content-center">
+    <div class="stat-title">New Registers</div>
+    <div class="stat-value text-error">1,200</div>
+    <div class="stat-desc text-error">↘︎ 90 (14%)</div>
+  </div>
+</div>
+
+<div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <div class="px-4 py-6 bg-base-100 card">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col w-full mb-4 widget-title">
+        <div class="text-base font-bold title font-base font-poppins">Online Stores</div>
+        <div class="text-sm description">Weekly Sales</div>
+      </div>
+    </div>
+
+    <div class="flex items-center h-full">
+      <%= pie_chart() %>
+    </div>
+  </div>
+
+  <div class="px-4 py-6 bg-base-100 card">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col w-full mb-4 widget-title">
+        <div class="text-base font-bold title font-base font-poppins">Countries</div>
+        <div class="text-sm description">Best online markets</div>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Orders</th>
+          <th>Sales</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-br"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">Brasil</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">605</div>
+          </td>
+          <td>
+            <div class="text-sm">41</div>
+          </td>
+          <td>
+            <span class="badge badge-sm badge-warning">new</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-us"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">USA</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">428</div>
+          </td>
+          <td>
+            <div class="text-sm">51</div>
+          </td>
+          <td>
+            <span class="rounded-lg badge badge-sm badge-error">important</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-es"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">España</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">585</div>
+          </td>
+          <td>
+            <div class="text-sm">80</div>
+          </td>
+          <td>
+            <span class="rounded-lg badge badge-sm badge-alt-green">active</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-ru"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">Россия</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">416</div>
+          </td>
+          <td>
+            <div class="text-sm">78</div>
+          </td>
+          <td>
+            <span class="rounded-lg badge badge-sm badge-info">new</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-cn"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">China</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">709</div>
+          </td>
+          <td>
+            <div class="text-sm">89</div>
+          </td>
+          <td>
+            <span class="rounded-lg badge badge-sm badge-success">great</span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex items-center justify-start">
+              <span class="text-lg flag-icon flag-icon-in"></span>
+              <span class="text-sm font-medium ltr:ml-3 rtl:mr-3">India</span>
+            </div>
+          </td>
+          <td>
+            <div class="text-sm">583</div>
+          </td>
+          <td>
+            <div class="text-sm">68</div>
+          </td>
+          <td>
+            <span class="rounded-lg badge badge-sm badge-success">great</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="px-4 py-6 bg-base-100 card">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col w-full mb-4 widget-title">
+        <div class="text-base font-bold title font-base font-poppins">Online Stores</div>
+        <div class="text-sm description">Weekly Sales</div>
+      </div>
+    </div>
+
+    <div class="flex items-center h-full">
+      <%= raw line_chart() %>
+    </div>
+  </div>
+
+  <div class="px-4 py-6 bg-base-100 card">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col w-full mb-4 widget-title">
+        <div class="text-base font-bold title font-base font-poppins">Online Stores</div>
+        <div class="text-sm description">Weekly Sales</div>
+      </div>
+    </div>
+
+    <div class="flex items-center h-full">
+      <%= bar_chart() %>
+    </div>
+  </div>
+</div>

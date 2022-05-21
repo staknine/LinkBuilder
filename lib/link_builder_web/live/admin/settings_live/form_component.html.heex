@@ -1,0 +1,32 @@
+<div>
+  <.form
+    let={f}
+    for={@changeset}
+    id={@id}
+    phx-target={@myself}
+    phx-submit="save">
+
+    <div class="mb-6 form-control">
+      <%= label f, :email, class: "label label-text" %>
+      <%= text_input f, :email, class: "input input-bordered" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :password, class: "label label-text" %>
+      <%= password_input f, :password, class: "input input-bordered" %>
+      <small class="block my-1 text-info">Leave blank if you don't want to change</small>
+      <%= error_tag f, :password %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :password_confirmation, class: "label label-text" %>
+      <%= password_input f, :password_confirmation, class: "input input-bordered" %>
+      <%= error_tag f, :password_confirmation %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  web:
+    build: '.'
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PASS="postgres"
+      - DATABASE_URL="ecto://postgres:postgres@${db}:5432/deployer_dev"
+    volumes:
+      - /opt/app/assets/node_modules
+      - /opt/app/deps
+      - .:/opt/app
+    depends_on:
+      - db
+    environment:
+      MIX_ENV: 'prod'
+  db:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD="postgres"
+

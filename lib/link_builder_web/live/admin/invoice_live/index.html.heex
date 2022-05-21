@@ -1,0 +1,94 @@
+<%= stripe_disabled_alert() %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Listing Invoices</h3>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th><%= table_link(@params, "Date", :inserted_at) %></th>
+              <th><%= table_link(@params, "Subtotal", :subtotal) %></th>
+              <th><%= table_link(@params, "Status", :status) %></th>
+              <th colspan="2">View Invoice</th>
+            </tr>
+          </thead>
+          <tbody id="invoices">
+<%= for invoice <- @invoices do %>
+            <tr id={"invoice-#{invoice.id}"} class="text-sm">
+              <td>
+                <div><%= human_date invoice.inserted_at %></div>
+                <small><%= invoice.stripe_id %></small>
+              </td>
+              <td><%= format_stripe_price invoice %></td>
+              <td>
+                <%= if invoice.status == "paid" do %>
+                  <span class="badge badge-success">
+                    <%= invoice.status %>
+                  </span>
+                <% else %>
+                  <span class="badge badge-info">
+                    <%= invoice.status %>
+                  </span>
+                <% end %>
+              </td>
+              <td>
+                <%= link to: "#{invoice.hosted_invoice_url}", target: "_blank" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                <% end %>
+              </td>
+              <td>
+                <%= link to: "#{invoice.invoice_pdf}" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                <% end %>
+              </td>
+            </tr>
+<% end %>
+          </tbody>
+        </table>
+
+        <%= pagination params: @params, page_number: assigns[:page_number], total_pages: assigns[:total_pages] %>
+      </div>
+    </div>
+  </div>
+  <div class="w-full pt-4 md:pt-0 md:pl-4 md:w-1/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h5>Filter Plans</h5>
+        </div>
+      </div>
+      <div class="max-w-full px-4 py-3">
+        <%= form_tag "#", method: :get, id: "lit-filters-form" do %>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Stripe</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :stripe_id, @params) %>
+              <%= filter_string_input(:plan, :stripe_id, @params) %>
+            </div>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Stripe plan name</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :name, @params) %>
+              <%= filter_string_input(:plan, :name, @params) %>
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <%= link "Clear Filters", to: Routes.admin_invoice_index_path(@socket, :index), class: "btn btn-link" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

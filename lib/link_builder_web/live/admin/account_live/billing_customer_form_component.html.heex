@@ -1,0 +1,21 @@
+<div>
+  <.form
+    let={f}
+    as={:stripe_customer}
+    for={@changeset}
+    id="billing-customer-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="mb-6 form-control">
+      <%= label f, :email, class: "label label-text" %>
+      <%= text_input f, :email, class: "input input-bordered" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

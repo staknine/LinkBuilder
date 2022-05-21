@@ -1,0 +1,33 @@
+<div id="flash-container" class="fixed top-0 right-0 z-50 w-64 mt-16 mr-6">
+  <%= for notification <- @notifications do %>
+      <div
+        data-notification-id={notification.id}
+        x-data="{ show: false }"
+        x-init="() => {
+          setTimeout(() => show = true, 300);
+          setTimeout(() => show = false, 8000);
+          $watch('show', shouldShow => $dispatch('clear-notification', { show: shouldShow, id: '#flash-container' }))
+        }"
+        x-show="show"
+        x-transition:enter="transform ease-out duration-300 transition"
+        x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+        x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="mb-4 shadow-2xl rounded-2xl bg-base-100"
+        role="alert">
+
+        <div class={"alert alert-#{notification.type}"}>
+          <div class="flex-1">
+            <label><%= notification.body %></label>
+          </div>
+          <div class="flex-none">
+            <button @click="show = false" phx-click="clear" phx-value-id={notification.id} class="btn btn-ghost">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula" class="h-full">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || app_name(), suffix: " · Admin" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body class="bg-base-200 text-base-content">
+    <section class="min-h-screen bg-base-200" x-data="{ sideBar: false }">
+      <nav data-theme="dracula" class="fixed top-0 left-0 z-20 h-full pb-10 overflow-x-hidden overflow-y-auto bg-base-100 text-base-content transition origin-left transform w-60 md:translate-x-0" :class="{ '-translate-x-full' : !sideBar, 'translate-x-0' : sideBar }" @click.away="sideBar = false" >
+        <%= link to: Routes.admin_dashboard_index_path(@conn, :index), class: "flex items-center px-4 py-5 text-2xl font-semibold" do %>
+          Administration
+        <% end %>
+        <nav class="drawer-side">
+          <ul class="menu">
+            <li>
+              <%= link to: Routes.admin_dashboard_index_path(@conn, :index) do %>
+                <svg class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span>Home</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link to: Routes.admin_account_index_path(@conn, :index) do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                </svg>
+                <span>Accounts</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link to: Routes.admin_user_index_path(@conn, :index) do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                <span>Users</span>
+              <% end %>
+            </li>
+            <li x-data="{open: false}">
+              <a @click="open = !open" class="flex items-center justify-between px-4 py-3 group" role="button">
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                  <span>Billing</span>
+                </div>
+                <svg :class="{ 'rotate-90': open }" class="flex-shrink-0 w-4 h-4 ml-2 transition transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentcolor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414.0z" clip-rule="evenodd"></path>
+                </svg>
+              </a>
+              <ul x-show="open" class="mb-4 -ml-6">
+                <li>
+                  <%= link to: Routes.admin_product_index_path(@conn, :index) do %>
+                    <span class="ml-6">Products</span>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link to: Routes.admin_plan_index_path(@conn, :index) do %>
+                    <span class="ml-6">Plans</span>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link to: Routes.admin_subscription_index_path(@conn, :index) do %>
+                    <span class="ml-6">Subscriptions</span>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link to: Routes.admin_invoice_index_path(@conn, :index) do %>
+                    <span class="ml-6">Invoices</span>
+                  <% end %>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <%= link to: Routes.admin_background_job_index_path(@conn, :index) do %>
+                <svg class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Background Jobs</span>
+              <% end %>
+            </li>
+            <li>
+              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                <%= link to: Routes.live_dashboard_path(@conn, :home) do %>
+                  <svg class="flex-shrink-0 w-5 h-5 mr-2 text-gray-400 transition group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  </svg>
+                  <span>LiveDashboard</span>
+                <% end %>
+              <% end %>
+            </li>
+          </ul>
+        </nav>
+      </nav>
+      <div class="ml-0 transition md:ml-60">
+        <header class="flex items-center justify-between w-full px-4 h-14">
+          <button class="block btn btn-light-secondary md:hidden" @click.stop="sideBar = true">
+            <span class="sr-only">Menu</span>
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="relative hidden -ml-3 md:block w-96">
+            <!-- ADD SEARCH OR SIMILAR HERE -->
+            <%= live_render @conn, AccountSwitcherLive %>
+          </div>
+          <div class="flex items-center">
+            <.dropdown>
+              <:toggle>
+                <svg class="flex-shrink-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+                </svg>
+              </:toggle>
+              <ul class="border shadow-xl menu bg-base-100 border-base-200 rounded-box w-52">
+                <li>
+                  <%= live_redirect "Settings", to: Routes.admin_setting_edit_path(@conn, :edit) %>
+                </li>
+                <li>
+                  <%= link "Sign Out", to: Routes.admin_session_path(@conn, :delete), method: :delete %>
+                </li>
+              </ul>
+            </.dropdown>
+          </div>
+        </header>
+        <div class="p-4">
+          <%= @inner_content %>
+        </div>
+      </div>
+      <!-- Sidebar Backdrop -->
+      <div class="fixed inset-0 z-10 w-screen h-screen bg-black bg-opacity-25 md:hidden" x-show.transition="sideBar" x-cloak></div>
+    </section>
+
+    <%= live_render @conn, LinkBuilderWeb.FlashLive, session: %{"info" => get_flash(@conn, :info), "error" => get_flash(@conn, :error)} %>
+  </body>
+</html>

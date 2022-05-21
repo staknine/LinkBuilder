@@ -1,0 +1,140 @@
+<%= if @live_action in [:new, :edit] do %>
+  <.modal id="modal" return_to={Routes.admin_plan_index_path(@socket, :index)}>
+    <:modal_title><%= @page_title %></:modal_title>
+    <.live_component
+      module={LinkBuilderWeb.Admin.PlanLive.FormComponent}
+      id={@plan.id || :new}
+      plan={@plan}
+      products={@products}
+      action={@live_action}
+      return_to={Routes.admin_plan_index_path(@socket, :index)} />
+  </.modal>
+<% end %>
+
+<%= stripe_disabled_alert() %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Listing Plans</h3>
+        </div>
+        <%= live_patch to: Routes.admin_plan_index_path(@socket, :new), class: "btn btn-ghost" do %>
+          <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 20 20" stroke-width="2"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+        <% end %>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th><%= table_link(@params, "Product", :name) %></th>
+              <th><%= table_link(@params, "Plan", :name) %></th>
+              <th><%= table_link(@params, "Amount", :amount) %></th>
+              <th><%= table_link(@params, "Currency", :currency) %></th>
+              <th><%= table_link(@params, "Interval", :interval) %></th>
+              <th><%= table_link(@params, "Active", :active) %></th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="plans" phx-update="append">
+            <%= for %{product: product} = plan <- @plans do %>
+              <tr id={"plan-#{plan.id}"} class="text-sm">
+                <td>
+                  <div><%= product.name %></div>
+                  <small><%= product.stripe_id %></small>
+                </td>
+                <td>
+                  <div><%= plan.name %></div>
+                  <small><%= plan.stripe_id %></small>
+                </td>
+                <td><%= plan.amount %></td>
+                <td><%= plan.currency %></td>
+                <td><%= plan.interval %></td>
+                <td>
+                  <%= if plan.active do %>
+                    <div class="badge badge-success">
+                      <small>Active</small>
+                    </div>
+                  <% else %>
+                    <div class="badge badge-warning">
+                      <small>Archived</small>
+                    </div>
+                  <% end %>
+                </td>
+
+                <td class="text-right">
+                  <span><%= live_redirect "Show", to: Routes.admin_plan_show_path(@socket, :show, plan), class: "link link-primary" %></span>
+                  <span><%= live_patch "Edit", to: Routes.admin_plan_index_path(@socket, :edit, plan), class: "link link-primary" %></span>
+                  <%= if plan.active do %>
+                    <span><%= link "Archive", to: "#", phx_click: "delete", phx_value_id: plan.id, data: [confirm: "Are you sure?"], class: "link link-primary" %></span>
+                  <% else %>
+                    <span><%= link "Activate", to: "#", phx_click: "delete", phx_value_id: plan.id, class: "link link-primary" %></span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= pagination params: @params, page_number: assigns[:page_number], total_pages: assigns[:total_pages] %>
+      </div>
+    </div>
+  </div>
+  <div class="w-full pt-4 md:pt-0 md:pl-4 md:w-1/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h5>Filter Plans</h5>
+        </div>
+      </div>
+      <div class="max-w-full px-4 py-3">
+        <%= form_tag "#", method: :get, id: "lit-filters-form" do %>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Stripe</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :stripe_id, @params) %>
+              <%= filter_string_input(:plan, :stripe_id, @params) %>
+            </div>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Stripe plan name</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :name, @params) %>
+              <%= filter_string_input(:plan, :name, @params) %>
+            </div>
+          </div>
+          <div class="flex-row mb-4 form-control">
+            <label class="cursor-pointer label">
+              <div>
+                <%= filter_boolean_input(:plan, :active, @params) %>
+                <span class="checkbox-mark"></span>
+              </div>
+              <span class="ml-2 label-text">Active</span>
+            </label>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Currency</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :currency, @params) %>
+              <%= filter_string_input(:plan, :currency, @params) %>
+            </div>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="block mb-1 text-sm">Interval</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:plan, :interval, @params) %>
+              <%= filter_string_input(:plan, :interval, @params) %>
+            </div>
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <%= link "Clear Filters", to: Routes.admin_plan_index_path(@socket, :index), class: "btn btn-link" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

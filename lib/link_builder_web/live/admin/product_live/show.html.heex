@@ -1,0 +1,43 @@
+<%= if @live_action in [:edit] do %>
+  <.modal id="modal" return_to={Routes.admin_product_show_path(@socket, :show, @product)}>
+    <:modal_title><%= @page_title %></:modal_title>
+    <.live_component
+      module={LinkBuilderWeb.Admin.ProductLive.FormComponent}
+      id={@product.id}
+      product={@product}
+      action={@live_action}
+      return_to={Routes.admin_product_show_path(@socket, :show, @product)} />
+  </.modal>
+<% end %>
+
+<%= stripe_disabled_alert() %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+
+    <div class="shadow bordered card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Show Product</h3>
+        </div>
+      </div>
+      <div class="card-body prose">
+
+        <div>
+          <strong>Stripe:</strong>
+          <%= @product.stripe_id %>
+        </div>
+
+        <div>
+          <strong>Stripe product name:</strong>
+          <%= @product.name %>
+        </div>
+
+      </div>
+      <div class="border-t card-actions border-base-200">
+        <%= live_patch "Edit", to: Routes.admin_product_show_path(@socket, :edit, @product), class: "btn btn-link" %>
+        <%= live_redirect "Back", to: Routes.admin_product_index_path(@socket, :index), class: "btn btn-link" %>
+      </div>
+    </div>
+  </div>
+</div>

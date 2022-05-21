@@ -1,0 +1,21 @@
+<div>
+  <.form
+    let={f}
+    for={@changeset}
+    as={"user"}
+    id={@id}
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="form-control">
+      <%= label f, :email, class: "label label-text" %>
+      <%= email_input f, :email, class: "input input-bordered", placeholder: "Add a valid email" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Send invitation", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

@@ -1,0 +1,20 @@
+<div>
+  <.form
+    let={f}
+    for={@changeset}
+    id="account-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="mb-6 form-control">
+      <%= label f, :name, class: "label label-text" %>
+      <%= text_input f, :name, class: "input input-bordered" %>
+      <%= error_tag f, :name %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

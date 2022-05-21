@@ -1,0 +1,32 @@
+<div>
+  <.form
+    let={f}
+    for={@changeset}
+    id="notification-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="mb-6 form-control">
+      <%= label f, :title, class: "label label-text" %>
+      <%= text_input f, :title, class: "input input-bordered" %>
+      <%= error_tag f, :title %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :body, class: "label label-text" %>
+      <%= textarea f, :body, class: "textarea textarea-bordered" %>
+      <%= error_tag f, :body %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :type, class: "label label-text" %>
+      <%= select f, :type, ["Database": "db", "Email": "email", "Flash": "flash", "All": "all"], class: "select select-bordered" %>
+      <%= error_tag f, :type %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

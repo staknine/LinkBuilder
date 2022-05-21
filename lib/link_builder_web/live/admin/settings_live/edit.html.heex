@@ -1,0 +1,22 @@
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+
+    <div class="shadow bordered card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Settings</h3>
+        </div>
+      </div>
+      <div class="card-body">
+
+      <%= live_component LinkBuilderWeb.Admin.SettingLive.FormComponent,
+        id: "settings-form",
+        admin: @admin,
+        return_to: Routes.admin_setting_edit_path(@socket, :edit) %>
+
+      </div>
+      <div class="border-t card-actions border-base-200">
+      </div>
+    </div>
+  </div>
+</div>

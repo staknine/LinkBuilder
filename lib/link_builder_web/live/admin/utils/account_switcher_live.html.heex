@@ -1,0 +1,55 @@
+<div class="relative inline-block text-left">
+  <button phx-click={JS.toggle(to: "#account-switcher-dropdown", in: {"ease-out duration-300", "opacity-0", "opacity-100"}, out: {"ease-in duration-75", "opacity-100", "opacity-0"})} class="flex items-center py-1 my-1 text-sm font-medium md:py-0 focus:outline-none md:mx-3 md:my-0">
+    <%= if @current_account do %>
+      Viewing: <%= @current_account.name %> - Switch
+    <% else %>
+      Select an Account
+    <% end %>
+    <svg class="w-5 h-5 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  <div
+    id="account-switcher-dropdown" class="absolute left-0 z-20 hidden w-72"
+    phx-click-away={JS.hide(to: "#account-switcher-dropdown", transition: {"ease-in duration-75", "opacity-100", "opacity-0"})}
+    phx-window-keydown={JS.hide(to: "#account-switcher-dropdown", transition: {"ease-in duration-75", "opacity-100", "opacity-0"})}
+    phx-key="escape"
+  >
+    <div class="mt-2 border shadow-xl dropdown-content bg-base-100 border-base-200 rounded-box w-72">
+      <div class="card compact">
+        <div class="card-body">
+          <h2 class="card-title">
+            <%= if @current_account do %>
+              Switch Account
+            <% else %>
+              Select an Account
+            <% end %>
+          </h2>
+          <p>Switch to handle an account from the list below</p>
+        </div>
+      </div>
+      <.form
+        let={f}
+        for={@changeset}
+        id="account-form"
+        as="filter"
+        phx-change="filter"
+        phx-submit="save">
+
+        <div class="p-2 form-control">
+          <%= text_input f, :account_name, class: "input input-bordered", placeholder: "Filter Account" %>
+        </div>
+      </.form>
+      <ul class="w-full mb-2 overflow-y-auto menu max-h-64">
+        <%= for account <- @filtered_accounts do %>
+          <li>
+            <%= link to: Routes.admin_account_switch_path(@socket, :create, account.token), method: :post do %>
+              <%= account.name %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div>
+  <.form
+    let={f}
+    for={@changeset}
+    id="plan-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <%= if @action == :new do %>
+      <div class="mb-6 form-control">
+        <%= label f, :product, class: "label label-text" %>
+        <%= select f, :product, Enum.map(@products, &{&1.name, &1.id}), class: "select select-bordered" %>
+        <%= error_tag f, :product %>
+      </div>
+    <% end %>
+
+    <div class="mb-6 form-control">
+      <%= label f, :name, class: "label label-text" %>
+      <%= text_input f, :name, class: "input input-bordered" %>
+      <%= error_tag f, :name %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :amount, class: "label label-text" %>
+      <%= text_input f, :amount, class: "input input-bordered" %>
+      <%= error_tag f, :amount %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :currency, class: "label label-text" %>
+      <%= select f, :currency, ~w(usd eur), class: "select select-bordered" %>
+      <%= error_tag f, :currency %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :interval, class: "label label-text" %>
+      <%= select f, :interval, ~w(month year), class: "select select-bordered" %>
+      <%= error_tag f, :interval %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>
+

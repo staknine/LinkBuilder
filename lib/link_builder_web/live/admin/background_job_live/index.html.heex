@@ -1,0 +1,83 @@
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Listing Jobs</h3>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th><%= table_link(@params, "State", :state) %></th>
+              <th><%= table_link(@params, "Queue", :queue) %></th>
+              <th><%= table_link(@params, "Worker", :worker) %></th>
+              <th><%= table_link(@params, "Attempt", :attempt) %></th>
+              <th><%= table_link(@params, "Max attempts", :max_attempts) %></th>
+              <th><%= table_link(@params, "Scheduled at", :scheduled_at) %></th>
+              <th><%= table_link(@params, "Attempted at", :attempted_at) %></th>
+              <th><%= table_link(@params, "Completed at", :completed_at) %></th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="jobs">
+            <%= for background_job <- @jobs do %>
+              <tr id={"background_job-#{background_job.id}"} class="text-sm">
+                <td><%= background_job.state %></td>
+                <td><%= background_job.queue %></td>
+                <td><%= background_job.worker %></td>
+                <td><%= background_job.attempt %></td>
+                <td><%= background_job.max_attempts %></td>
+                <td><%= background_job.scheduled_at %></td>
+                <td><%= background_job.attempted_at %></td>
+                <td><%= background_job.completed_at %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= pagination params: @params, page_number: assigns[:page_number], total_pages: assigns[:total_pages] %>
+      </div>
+    </div>
+  </div>
+  <div class="w-full pt-4 md:pt-0 md:pl-4 md:w-1/3">
+    <div class="border shadow card bg-base-100 border-base-200">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h5>Filter Jobs</h5>
+        </div>
+      </div>
+      <div class="max-w-full px-4 py-3 prose">
+       <%= form_tag "#", method: :get, id: "filters-form" do %>
+          <div class="mb-4 form-control">
+            <label class="label label-text">State</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:background_job, :state, @params) %>
+              <%= filter_string_input(:background_job, :state, @params) %>
+            </div>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="label label-text">Queue</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:background_job, :queue, @params) %>
+              <%= filter_string_input(:background_job, :queue, @params) %>
+            </div>
+          </div>
+          <div class="mb-4 form-control">
+            <label class="label label-text">Worker</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <%= filter_select(:background_job, :worker, @params) %>
+              <%= filter_string_input(:background_job, :worker, @params) %>
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <%= link "Clear Filters", to: Routes.admin_background_job_index_path(@socket, :index), class: "btn btn-link" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

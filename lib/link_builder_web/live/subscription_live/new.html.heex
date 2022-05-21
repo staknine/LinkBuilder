@@ -1,0 +1,47 @@
+<h5 class="px-5 pb-2 text-lg leading-normal text-center">Start Subscription</h5>
+<div id="checkout-new">
+  <.form
+    let={f}
+    for={@changeset}
+    as={:price}
+    phx-change="update-plan">
+
+    <div class="mt-4 mb-6 form-control">
+      <%= label f, :plan_id, class: "label label-text" do %>
+        Pick a plan
+      <% end %>
+      <%= select f, :plan_id, @products, class: "select select-bordered "%>
+    </div>
+  </.form>
+
+  <form action="#" method="post" phx-hook="InitCheckout" phx-update="ignore" id="payment-form" data-public-key={Application.get_env(:stripity_stripe, :public_key)}>
+    <div class="mb-6 form-control">
+      <label for="card-name" class="label label-text">
+        Your Name (same as your credit card)
+      </label>
+      <input type="text" name="card-name" id="card-name" class="input input-bordered" placeholder="Ex. James Bond" required />
+    </div>
+
+    <div class="mb-6">
+      <label for="card-element" class="label label-text">
+        Credit or debit card
+      </label>
+      <div id="card-element" class="px-3 py-2 border border-gray-300 rounded-md shadow-sm form-input" >
+        <!-- A Stripe Element will be inserted here. -->
+      </div>
+
+      <!-- Used to display form errors. -->
+      <div id="card-errors" class="mt-4 text-white bg-yellow-600 alert" role="alert"><%= @error_message %></div>
+    </div>
+
+    <button id="submit" class="w-full btn btn-primary">
+      <%= if @loading do %>
+        <svg class="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      <% end %>
+      <span id="button-text">Pay</span><span id="order-amount"></span>
+    </button>
+  </form>
+</div>
