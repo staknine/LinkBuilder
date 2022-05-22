@@ -12,13 +12,17 @@ defmodule LinkBuilder.Features.ForgotPasswordTest do
 
     session =
       session
-      |> visit("/app/reset_password")
+      |> visit("/reset_password")
       |> assert_text("Forgot your password?")
       |> fill_in(@email_field, with: user.email)
       |> click(button("Send password reset instructions"))
-      |> assert_has(css(".alert-info label", text: "an email with reset instructions will be sent to you"))
+      |> assert_has(
+        css(".alert-info label",
+          text:
+            "If your email is in our system, you will receive instructions to reset your password shortly."
+        )
+      )
 
-
-    assert current_url(session) =~ "/app/session/new"
+    assert current_url(session) =~ "/"
   end
 end
